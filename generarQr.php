@@ -2,20 +2,25 @@
 include_once "librerias/phpqrcode/qrlib.php";
 include_once 'librerias/phpass-0.5/PasswordHash.php';
     session_start();
+    //toma los datos enviados por el formulario
     $method = $_SERVER['REQUEST_METHOD'];
     $data   = $method === 'POST' ? $_POST : $_GET;
     $tipo = $data['tipoDato'] ?? '';
     $ruta = "uploads/";
+    //dependinedo del tipo el contenido cambiara la forma de como se guarda
     if ($tipo === 'texto' || $tipo === 'numero') {
+        //texto o numero se guardaran directamnete en el valor
         $valor = $data['valor'];
         $contenido = $valor;
     } elseif ($tipo === 'imagen' && isset($data['archivo'])) {
+        //imgagen se guardara en la carpeta uploads y se guardara la ruta
         $nombre = $data['archivo']['name'];
         $rutaTemporal = $data['archivo']['tmp_name'];
         $destino = $ruta.$nombre;
         move_uploaded_file($rutaTemporal, $destino);
         $contenido = $destino;
     }else if( $tipo === "usuario"){
+        //usuario se guardara en sesion el usuario y la contrasenia hasheada
         $hasher = new PasswordHash(8, false);
         $name = $data['name'];
         $password = $data['password']; 
@@ -30,6 +35,7 @@ include_once 'librerias/phpass-0.5/PasswordHash.php';
     else {
         die("Error: datos inválidos");
     }
+    //al finalizar se genera el qr con el contenido correspondiente 
     $nombreQR = $ruta. 'QRimg' . time() . '.png';
     QRcode::png($contenido, $nombreQR, QR_ECLEVEL_M, 6, 2);
     
@@ -50,12 +56,14 @@ include_once 'librerias/phpass-0.5/PasswordHash.php';
             <div class="text-center">
                 <img src="<?php echo $nombreQR; ?>" alt="Código QR">
             </div>
+            <!--luego si los valores del qr fueron caracteres se mostrar al continuacion del qr-->
             <?php if($tipo === "texto" || $tipo === "numero"): ?>
             <div class="text-center mt-2">
                 <p><strong>Contenido Qr:</strong><?php echo $contenido?></p>
             </div>
             <?php else:?>
                 <div clas="text-center mt-2">
+                    <!--Al igual que los caracteres se presentara el usuario y la contrasenia codificada-->
                     <p><strong>Usuario: </strong><?php echo $name ?></p>
                     <p><strong>Contraseña: </strong><?php echo $hash;?></p>
                     <a href="inicioSesion.php">ingresar a inicio se sesion</a>

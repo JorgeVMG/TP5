@@ -7,9 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
-<style>
-    
-</style>
+<!--Esta pagina es creada para solictar datos al usuario dependiendo de lo que quiera convertir en qr -->
 <body >
     <div class="container">
         <div class="row col-lg-4 border border-dark border-2 mx-auto mt-5 p-3 " >
@@ -17,6 +15,7 @@
             <form action="generarQr.php" class="mt-3" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="ejemplo" value="1">
                 <label for="tipoDato" class="form-label">Seleccione el tipo de dato</label>
+                <!--En este select se optiene lo que se desea convertir en qr-->
                 <select name="tipoDato" id="tipoDato" class="form-control mb-3">
                     <option value="">seleccionar un dato</option>
                     <option value="texto">texto</option>
@@ -24,9 +23,12 @@
                     <option value="imagen">imagen</option>
                     <option value="usuario">usuario</option>
                 </select>
-                <div id="ingresoDato"></div>
+                <div id="ingresoDato">
+                    <!--Dependiendo de lo que se elija se mostrara aqui-->
+                </div>
                 <div class="d-grid gap-2 mt-4">
                     <input type="submit" class="btn btn-success" value="Crear Qr">
+                    <!--luego al oprimir submit se enviara al archivo generarQr.php-->
                 </div>
             </form>
         </div>
